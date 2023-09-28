@@ -21,8 +21,8 @@ public class Person {
     @Column(nullable = false, length = 60)
     private String name;
 
-//    @Column(nullable = false)
-//    private LocalDate dateOfBirth;
+    @Column
+    private LocalDate dateOfBirth;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<PublicPlace> publicPlaces;
@@ -30,10 +30,11 @@ public class Person {
     public Person(Long id, String name, LocalDate dateOfBirth, String publicPlace, String cep, String number, String city) {
         this.id = id;
         this.name = name;
-//        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public Person() {}
+    public Person() {
+    }
 
     public Long getId() {
         return id;
@@ -51,13 +52,13 @@ public class Person {
         this.name = name;
     }
 
-//    public LocalDate getDateOfBirth() {
-//        return dateOfBirth;
-//    }
-//
-//    public void setDateOfBirth(LocalDate dateOfBirth) {
-//        this.dateOfBirth = dateOfBirth;
-//    }
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public List<PublicPlace> getPublicPlaces() {
         return publicPlaces;

@@ -4,6 +4,7 @@ import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.domain.PublicPlace;
 import com.gabriel.attornatus.repositories.PersonRepository;
 import com.gabriel.attornatus.services.Exceptions.ObjectNotFoundException;
+import com.gabriel.attornatus.util.StringToLocalDateConverter;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class PersonService {
     public Person create(Person person) {
         containsOnlyLetters(person.getName(), "name");
 //        person.setDateOfBirth(dateFormatter.formattedDate(person.getDateOfBirth().toString()));
+//        person.setDateOfBirth(StringToLocalDateConverter.convert(person.getDateOfBirth().toString()));;
         return personRepository.save(person);
     }
 
