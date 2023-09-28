@@ -24,13 +24,9 @@ public class PublicPlaceResource {
     private PersonService personService;
 
     @PostMapping("/{idPerson}")
-    public ResponseEntity<PublicPlace> createPublicPlace(@PathVariable Long idPerson, @RequestBody @Valid PublicPlace publicPlace) {
-        Person person = personService.findById(idPerson);
-        publicPlace.setPerson(person);
-        PublicPlace publicPlaceSave = publicPlaceService.create(publicPlace);
-
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(publicPlaceSave.getId()).toUri();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(publicPlaceSave);
+    public ResponseEntity<PublicPlace> createPublicPlace(@PathVariable Long idPerson, @RequestBody @Valid PublicPlace publicPlaceObj) {
+        PublicPlace publicPlace = publicPlaceService.create(publicPlaceObj, idPerson);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(publicPlace.getId()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).body(publicPlace);
     }
 }

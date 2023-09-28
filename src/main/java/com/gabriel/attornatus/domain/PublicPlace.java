@@ -26,16 +26,20 @@ public class PublicPlace {
     @Column(nullable = false, length = 50)
     private String city;
 
+    @Column(name = "main", nullable = false)
+    private boolean main;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
 
-    public PublicPlace(String publicPlace, String cep, String number, String city) {
+    public PublicPlace(String publicPlace, String cep, String number, String city, boolean main) {
         this.publicPlace = publicPlace;
         this.cep = cep;
         this.number = number;
         this.city = city;
+        this.main = main;
     }
 
     public PublicPlace() {}
@@ -85,5 +89,13 @@ public class PublicPlace {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public boolean isMain() {
+        return main;
+    }
+
+    public void setMain(boolean main) {
+        this.main = main;
     }
 }
