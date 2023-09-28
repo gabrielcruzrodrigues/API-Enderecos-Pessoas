@@ -1,5 +1,6 @@
 package com.gabriel.attornatus.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
@@ -25,6 +26,7 @@ public class PublicPlace {
     @Column(nullable = false, length = 50)
     private String city;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;

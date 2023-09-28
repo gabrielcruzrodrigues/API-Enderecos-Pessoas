@@ -20,7 +20,7 @@ public class Person {
 //    @Column(nullable = false)
 //    private LocalDate dateOfBirth;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<PublicPlace> publicPlaces;
 
     public Person(Long id, String name, LocalDate dateOfBirth, String publicPlace, String cep, String number, String city) {

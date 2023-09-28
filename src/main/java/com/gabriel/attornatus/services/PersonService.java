@@ -24,6 +24,7 @@ public class PersonService {
         return personRepository.save(person);
     }
 
+    @Transactional
     public Person findById(Long id) {
         Optional<Person> person = personRepository.findById(id);
         return person.orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
