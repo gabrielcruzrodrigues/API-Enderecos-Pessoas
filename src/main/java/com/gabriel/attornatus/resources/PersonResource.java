@@ -39,7 +39,7 @@ public class PersonResource {
         return ResponseEntity.ok().body(person);
     }
 
-    @GetMapping("/{id}/PublicPlaces")
+    @GetMapping("/publicPlaces/{id}")
     public ResponseEntity<List<PublicPlace>> findAllPublicPlaces(@PathVariable Long id) {
         return ResponseEntity.ok().body(personService.findAllPublicPlaces(id));
     }

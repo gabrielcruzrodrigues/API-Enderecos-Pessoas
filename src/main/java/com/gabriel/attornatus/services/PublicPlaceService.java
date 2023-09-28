@@ -1,5 +1,6 @@
 package com.gabriel.attornatus.services;
 
+import com.gabriel.attornatus.domain.DTO.PublicPlaceDTO;
 import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.domain.PublicPlace;
 import com.gabriel.attornatus.repositories.PublicPlaceRepository;
@@ -49,9 +50,10 @@ public class PublicPlaceService {
         return null;
     }
 
-    public PublicPlace changeOfMainPublicPlace(Long idPerson, Long idNewPublicPlace) {
+    public PublicPlace changeOfMainPublicPlace(Long idPerson, PublicPlaceDTO idNewPublicPlace) {
         PublicPlace publicPlace = findMainPublicPlace(idPerson);
-        PublicPlace newPublicPlace = this.findById(idNewPublicPlace);
+        Long id = idNewPublicPlace.getId();
+        PublicPlace newPublicPlace = this.findById(id);
 
         return updateOfPublicPlace(publicPlace, newPublicPlace);
     }

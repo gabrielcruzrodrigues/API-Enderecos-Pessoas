@@ -1,5 +1,6 @@
 package com.gabriel.attornatus.resources;
 
+import com.gabriel.attornatus.domain.DTO.PublicPlaceDTO;
 import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.domain.PublicPlace;
 import com.gabriel.attornatus.services.PersonService;
@@ -37,7 +38,7 @@ public class PublicPlaceResource {
     }
 
     @PutMapping("/main/{idPerson}")
-    public ResponseEntity<PublicPlace> setNewMainPublicPlace(@PathVariable Long idPerson, @RequestBody Long id) {
+    public ResponseEntity<PublicPlace> setNewMainPublicPlace(@PathVariable Long idPerson, @RequestBody PublicPlaceDTO id) {
         return ResponseEntity.ok().body(publicPlaceService.changeOfMainPublicPlace(idPerson, id));
     }
 }
