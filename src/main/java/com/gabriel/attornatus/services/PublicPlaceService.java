@@ -4,11 +4,14 @@ import com.gabriel.attornatus.domain.DTO.PublicPlaceDTO;
 import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.domain.PublicPlace;
 import com.gabriel.attornatus.repositories.PublicPlaceRepository;
+import com.gabriel.attornatus.services.Exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static com.gabriel.attornatus.util.OnlyLetters.containsOnlyLetters;
 
 @Service
 public class PublicPlaceService {
@@ -21,6 +24,8 @@ public class PublicPlaceService {
 
     @Transactional
     public PublicPlace create(PublicPlace publicPlaceObj, Long idPerson) {
+        containsOnlyLetters(publicPlaceObj.getCity(), "city");
+
         Person person = personService.findById(idPerson);
         PublicPlace publicPlaceForSave = preparesPublicPlaceForCreation(person, publicPlaceObj);
         return publicPlaceRepository.save(publicPlaceForSave);
@@ -60,7 +65,7 @@ public class PublicPlaceService {
 
     public PublicPlace findById(Long id) {
         Optional<PublicPlace> publicPlace = publicPlaceRepository.findById(id);
-        return publicPlace.orElseThrow(() -> new RuntimeException("logradouro não encontrado!"));
+        return publicPlace.orElseThrow(() -> new ObjectNotFoundException("logradouro não encontrado!"));
     }
 
     private PublicPlace updateOfPublicPlace(PublicPlace publicPlace, PublicPlace newPublicPlace) {

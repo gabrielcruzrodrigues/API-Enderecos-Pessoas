@@ -2,6 +2,7 @@ package com.gabriel.attornatus.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -12,18 +13,23 @@ public class PublicPlace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, length = 60)
+    @NotBlank(message = "O seu logradouro (PublicPlace) não pode ser vazio.")
+    @Column(length = 60, nullable = false)
+    @Size(min = 5, max = 60, message = "Seu logradouro (PublicPlace) deve ter mais de 5 caracteres.")
     private String publicPlace;
 
     @Column(nullable = false, length = 8)
-    @Size(min = 8, max = 8)
+    @Size(min = 8, max = 8, message = "Digite um CEP válido com 8 caracteres, sem pontos ou traços.")
     private String cep;
 
     @Column(nullable = false, length = 11)
-//    @Size(min = 11, max = 11)
+    @NotBlank(message = "A numeração da sua residêcia não pode estar em branco.")
+    @Size(min = 1, max = 10, message = "Informe um numero valido!")
     private String number;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 30)
+    @NotBlank(message = "A sua cidade não pode estar em branco.")
+    @Size(min = 5, max = 30, message = "Digite uma cidade válida.")
     private String city;
 
     @Column(name = "main", nullable = false)

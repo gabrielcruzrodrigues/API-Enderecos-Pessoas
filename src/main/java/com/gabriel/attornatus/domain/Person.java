@@ -1,6 +1,8 @@
 package com.gabriel.attornatus.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -14,6 +16,8 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @NotBlank(message = "O nome não pode estar em branco!")
     @Column(nullable = false, length = 60)
     private String name;
 
