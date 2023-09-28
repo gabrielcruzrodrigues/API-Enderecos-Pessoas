@@ -17,10 +17,25 @@ public class PublicPlaceService {
     private PersonService personService;
 
     @Transactional
-    public PublicPlace create(PublicPlace publicPlace, Long idPerson) {
+    public PublicPlace create(PublicPlace publicPlaceObj, Long idPerson) {
         Person person = personService.findById(idPerson);
+        PublicPlace publicPlaceForSave = preparesPublicPlaceForCreation(person, publicPlaceObj);
+        return publicPlaceRepository.save(publicPlaceForSave);
+    }
+
+    private PublicPlace preparesPublicPlaceForCreation(Person person, PublicPlace publicPlace) {
+        if (checkIfIsTheFirstPublicPlace(person)) {
+            publicPlace.setMain(true);
+        } else {
+            publicPlace.setMain(false);
+        }
+
         publicPlace.setId(null);
         publicPlace.setPerson(person);
-        return publicPlaceRepository.save(publicPlace);
+        return publicPlace;
+    }
+
+    private boolean checkIfIsTheFirstPublicPlace(Person person) {
+         return person.getPublicPlaces().size() == 0;
     }
 }
