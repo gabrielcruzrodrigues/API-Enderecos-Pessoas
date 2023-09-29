@@ -6,7 +6,6 @@ import com.gabriel.attornatus.domain.PublicPlace;
 import com.gabriel.attornatus.repositories.PublicPlaceRepository;
 import com.gabriel.attornatus.services.Exceptions.ObjectNotFoundException;
 import com.gabriel.attornatus.util.OnlyLetters;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +31,7 @@ class PublicPlaceServiceTest {
     public static final String PUBLIC_PLACE = "Rua j";
     public static final String CEP = "12345678";
     public static final String NUMBER = "64";
-    public static final String CITY = "Sao Paulo";
+    public static final String CITY = "SaoPaulo";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String PERSON_NOT_FOUND = "pessoa não encontrada.";
@@ -53,6 +52,8 @@ class PublicPlaceServiceTest {
     private Person personWithPublicPlace;
     private PublicPlace publicPlace;
     private PublicPlace placeMain;
+    private PublicPlace placeMainPerson;
+    private List<PublicPlace> publicPlaces;
     private PublicPlaceDTO placeDTO;
     private Optional<PublicPlace> optionalplace;
 
@@ -64,22 +65,21 @@ class PublicPlaceServiceTest {
 
 //    @Test
 //    void mustReturnAnSuccessAndAPublicPlaceInstanceWithTheMainFieldValueTrue_whenToCallCreate() {
-//        when(personService.findById(anyLong())).thenReturn(person);
-//        when(publicPlaceRepository.save(publicPlaceMain)).thenReturn(publicPlaceMain);
-//        when(OnlyLetters.containsOnlyLetters(any(), any())).thenReturn(true);
+//        when(personService.findById(anyLong())).thenReturn(personWithPublicPlace);
+//        when(publicPlaceRepository.save(placeMain)).thenReturn(placeMainPerson);
 //
 //        PublicPlace response = publicPlaceService.create(publicPlace, ID);
 //
-//        assertNotNull(response);
+//        System.out.println(response);
 //        assertEquals(PublicPlace.class, response.getClass());
 //        assertTrue(response.isMain());
 //    }
 
     @Test
-    void mustReturnThePersonMainPublicPlace_whenToCallFindMainPublicPlace() {
+    void mustReturnThePersonMainPublicPlace_whenToCallReturnMainPublicPlace() {
         when(personService.findById(anyLong())).thenReturn(personWithPublicPlace);
 
-        PublicPlace response = publicPlaceService.findMainPublicPlace(ID);
+        PublicPlace response = publicPlaceService.returnMainPublicPlace(ID);
 
         assertNotNull(response);
         assertEquals(PublicPlace.class, response.getClass());
@@ -91,22 +91,27 @@ class PublicPlaceServiceTest {
     }
 
     @Test
-    void mustReturnObjectNotFoundException_whenToCallFindById() {
-        when(personService.findById(anyLong())).thenThrow(new ObjectNotFoundException(PERSON_NOT_FOUND));
+    void mustReturnNullValue_whenToCallReturnMainPublicPlace() {
+        when(personService.findById(anyLong())).thenReturn(null);
 
-        try {
-            publicPlaceService.findMainPublicPlace(ID);
-        } catch (Exception ex) {
-            assertNotNull(ex);
-            assertNotNull(ex.getMessage());
-            assertEquals(ObjectNotFoundException.class, ex.getClass());
-            assertEquals(PERSON_NOT_FOUND, ex.getMessage());
-        }
+        PublicPlace response = publicPlaceService.returnMainPublicPlace(ID);
+
+        assertNull(response);
     }
+
+    @Test
+    void mustReturnNullValue_whenToCallFindMain() {
+        when(personService.findById(anyLong())).thenReturn(null);
+
+        PublicPlace response = publicPlaceService.findMain(publicPlaces);
+
+        assertNull(response);
+    }
+
 
 //    @Test
 //    void mustReturnAnInstanceOfPublicPlaceMain_whenToCallChangeOfMainPublicPlace() {
-//       when(publicPlaceService.findMainPublicPlace(anyLong())).thenReturn(placeMain);
+//       when(publicPlaceService.returnMainPublicPlace(anyLong())).thenReturn(new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE));
 //       when(personService.findById(anyLong())).thenReturn(personWithPublicPlace);
 //       when(publicPlaceRepository.findById(anyLong())).thenReturn(optionalplace);
 //
@@ -116,18 +121,58 @@ class PublicPlaceServiceTest {
 //
 //    }
 
+//    @Test
+//    void mustReturnSuccessAndAnPublicPlaceInstance_whenChangeOfMainPublicPlace() {
+//        when(personService.findById(anyLong())).thenReturn(person);
+//        when(publicPlaceRepository.findById(anyLong())).thenReturn(Optional.of(publicPlace));
+//        when(publicPlaceService.updateOfPublicPlace(publicPlace, publicPlace)).thenReturn(publicPlace);
+//        when(publicPlaceService.findById(anyLong())).thenReturn(publicPlace);
+//
+//        PublicPlace response = publicPlaceService.changeOfMainPublicPlace(ID, placeDTO);
+//
+//        assertNotNull(response);
+//    }
+
     @Test
-    void findById() {
+    void mustReturnObjectNotFoundException_whenToCallFindById() {
+        when(personService.findById(anyLong())).thenThrow(new ObjectNotFoundException(PERSON_NOT_FOUND));
+
+        try {
+            publicPlaceService.returnMainPublicPlace(ID);
+        } catch (Exception ex) {
+            assertNotNull(ex);
+            assertNotNull(ex.getMessage());
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals(PERSON_NOT_FOUND, ex.getMessage());
+        }
     }
 
+    @Test
+    void mustReturnSuccessAndAnPublicPlaceInstance_whenToCallFindById() {
+        when(publicPlaceRepository.findById(anyLong())).thenReturn(optionalplace);
+
+        PublicPlace response = publicPlaceService.findById(ID);
+
+        assertNotNull(response);
+        assertEquals(response.getClass(), response.getClass());
+
+        assertEquals(PUBLIC_PLACE, response.getPublicPlace());
+        assertEquals(CEP, response.getCep());
+        assertEquals(NUMBER, response.getNumber());
+        assertEquals(CITY, response.getCity());
+    }
+
+
     private void startPerson() {
-        List<PublicPlace> publicPlaces = List.of(new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE));
+        List<PublicPlace> publicPlacesMain = List.of(new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE));
+        publicPlaces = List.of(new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, FALSE));
 
         person = new Person(ID, NAME, DATE_OF_BIRTH);
-        personWithPublicPlace = new Person(ID, NAME, DATE_OF_BIRTH, publicPlaces);
+        personWithPublicPlace = new Person(ID, NAME, DATE_OF_BIRTH, publicPlacesMain);
         publicPlace = new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, FALSE);
         optionalplace = Optional.of(new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, FALSE));
         placeMain = new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE);
+        placeMainPerson = new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE, person);
         placeDTO = new PublicPlaceDTO(ID);
 
 

@@ -48,6 +48,15 @@ public class PublicPlace {
         this.main = main;
     }
 
+    public PublicPlace(String publicPlace, String cep, String number, String city, boolean main, Person person) {
+        this.publicPlace = publicPlace;
+        this.cep = cep;
+        this.number = number;
+        this.city = city;
+        this.main = main;
+        this.person = person;
+    }
+
     public PublicPlace() {}
 
     public String getPublicPlace() {

@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.gabriel.attornatus.util.OnlyLetters.containsOnlyLetters;
+import static com.gabriel.attornatus.util.OnlyLetters.NameContainsOnlyLetters;
 
 @Service
 public class PersonService {
@@ -23,7 +23,7 @@ public class PersonService {
 
     @Transactional
     public Person create(Person person) {
-        containsOnlyLetters(person.getName(), "name");
+        NameContainsOnlyLetters(person, "name");
 //        person.setDateOfBirth(dateFormatter.formattedDate(person.getDateOfBirth().toString()));
 //        person.setDateOfBirth(StringToLocalDateConverter.convert(person.getDateOfBirth().toString()));;
         return personRepository.save(person);

@@ -1,12 +1,10 @@
 package com.gabriel.attornatus.resources;
 
 import com.gabriel.attornatus.domain.DTO.PublicPlaceDTO;
-import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.domain.PublicPlace;
 import com.gabriel.attornatus.services.PersonService;
 import com.gabriel.attornatus.services.PublicPlaceService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +32,7 @@ public class PublicPlaceResource {
 
     @GetMapping("/main/{idPerson}")
     public ResponseEntity<PublicPlace> searchMainPublicPlace(@PathVariable Long idPerson) {
-        return ResponseEntity.ok().body(publicPlaceService.findMainPublicPlace(idPerson));
+        return ResponseEntity.ok().body(publicPlaceService.returnMainPublicPlace(idPerson));
     }
 
     @PutMapping("/main/{idPerson}")

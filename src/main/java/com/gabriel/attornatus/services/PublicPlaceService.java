@@ -9,9 +9,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
-import static com.gabriel.attornatus.util.OnlyLetters.containsOnlyLetters;
+import static com.gabriel.attornatus.util.OnlyLetters.CityContainsOnlyLetters;
 
 @Service
 public class PublicPlaceService {
@@ -24,7 +25,7 @@ public class PublicPlaceService {
 
     @Transactional
     public PublicPlace create(PublicPlace publicPlaceObj, Long idPerson) {
-        containsOnlyLetters(publicPlaceObj.getCity(), "city");
+        CityContainsOnlyLetters(publicPlaceObj, "city");
 
         Person person = personService.findById(idPerson);
         PublicPlace publicPlaceForSave = preparesPublicPlaceForCreation(person, publicPlaceObj);
@@ -44,19 +45,27 @@ public class PublicPlaceService {
     }
 
     private boolean checkIfIsTheFirstPublicPlace(Person person) {
-         return person.getPublicPlaces().isEmpty();
+        return person.getPublicPlaces().isEmpty();
     }
 
-    public PublicPlace findMainPublicPlace(Long id) {
+    public PublicPlace returnMainPublicPlace(Long id) {
         Person person = personService.findById(id);
-        for (PublicPlace i : person.getPublicPlaces()) {
+        if (person == null) {
+            return null;
+        } else {
+            return findMain(person.getPublicPlaces());
+        }
+    }
+
+    public PublicPlace findMain(List<PublicPlace> publicPlace) {
+        for (PublicPlace i : publicPlace) {
             if (i.isMain()) return i;
         }
         return null;
     }
 
     public PublicPlace changeOfMainPublicPlace(Long idPerson, PublicPlaceDTO PlaceTDO) {
-        PublicPlace publicPlace = findMainPublicPlace(idPerson);
+        PublicPlace publicPlace = returnMainPublicPlace(idPerson);
         Long id = PlaceTDO.getId();
         PublicPlace newPublicPlace = this.findById(id);
 
@@ -68,7 +77,7 @@ public class PublicPlaceService {
         return publicPlace.orElseThrow(() -> new ObjectNotFoundException("logradouro não encontrado!"));
     }
 
-    private PublicPlace updateOfPublicPlace(PublicPlace publicPlace, PublicPlace newPublicPlace) {
+    public PublicPlace updateOfPublicPlace(PublicPlace publicPlace, PublicPlace newPublicPlace) {
         publicPlace.setMain(false);
         newPublicPlace.setMain(true);
         publicPlaceRepository.save(publicPlace);
