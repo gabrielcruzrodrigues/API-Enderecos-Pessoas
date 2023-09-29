@@ -20,9 +20,6 @@ public class PublicPlaceResource {
     @Autowired
     private PublicPlaceService publicPlaceService;
 
-    @Autowired
-    private PersonService personService;
-
     @PostMapping("/{idPerson}")
     public ResponseEntity<PublicPlace> createPublicPlace(@PathVariable Long idPerson, @RequestBody @Valid PublicPlace publicPlaceObj) {
         PublicPlace publicPlace = publicPlaceService.create(publicPlaceObj, idPerson);

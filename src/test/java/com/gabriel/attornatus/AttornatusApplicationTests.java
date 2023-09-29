@@ -8,6 +8,7 @@ class AttornatusApplicationTests {
 
 	@Test
 	void main() {
+		AttornatusApplication.main(new String[] {});
 	}
 
 }

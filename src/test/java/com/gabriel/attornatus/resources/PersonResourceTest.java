@@ -194,6 +194,5 @@ class PersonResourceTest {
         person = new Person(ID, NAME, DATE_OF_BIRTH);
         personWithPublicPlace = new Person(ID, NAME, DATE_OF_BIRTH, publicPlaces);
         publicPlace = new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, FALSE);
-
     }
 }
