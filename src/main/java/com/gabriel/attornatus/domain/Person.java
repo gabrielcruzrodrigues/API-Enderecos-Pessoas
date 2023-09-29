@@ -27,7 +27,7 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<PublicPlace> publicPlaces;
 
-    public Person(Long id, String name, LocalDate dateOfBirth, String publicPlace, String cep, String number, String city) {
+    public Person(Long id, String name, LocalDate dateOfBirth) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
