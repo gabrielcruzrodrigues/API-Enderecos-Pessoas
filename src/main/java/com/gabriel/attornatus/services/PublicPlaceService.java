@@ -55,9 +55,9 @@ public class PublicPlaceService {
         return null;
     }
 
-    public PublicPlace changeOfMainPublicPlace(Long idPerson, PublicPlaceDTO idNewPublicPlace) {
+    public PublicPlace changeOfMainPublicPlace(Long idPerson, PublicPlaceDTO PlaceTDO) {
         PublicPlace publicPlace = findMainPublicPlace(idPerson);
-        Long id = idNewPublicPlace.getId();
+        Long id = PlaceTDO.getId();
         PublicPlace newPublicPlace = this.findById(id);
 
         return updateOfPublicPlace(publicPlace, newPublicPlace);
