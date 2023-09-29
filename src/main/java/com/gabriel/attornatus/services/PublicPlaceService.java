@@ -44,7 +44,7 @@ public class PublicPlaceService {
     }
 
     private boolean checkIfIsTheFirstPublicPlace(Person person) {
-         return person.getPublicPlaces().size() == 0;
+         return person.getPublicPlaces().isEmpty();
     }
 
     public PublicPlace findMainPublicPlace(Long id) {

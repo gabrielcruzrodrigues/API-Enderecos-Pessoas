@@ -4,16 +4,12 @@ import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.domain.PublicPlace;
 import com.gabriel.attornatus.repositories.PersonRepository;
 import com.gabriel.attornatus.services.Exceptions.ObjectNotFoundException;
-import com.gabriel.attornatus.util.OnlyLetters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,7 +50,7 @@ class PersonServiceTest {
     }
 
     @Test
-    void shouldAnSuccessAndAnPersonInstance_whenToCallCreate() {
+    void mustReturnAnSuccessAndAnPersonInstance_whenToCallCreate() {
         when(personRepository.save(any())).thenReturn(person);
 
         Person response = personService.create(person);
@@ -68,7 +64,7 @@ class PersonServiceTest {
     }
 
     @Test
-    void shouldAnSuccessAndAnPersonInstance_whenToCallFindById() {
+    void mustReturnAnSuccessAndAnPersonInstance_whenToCallFindById() {
         when(personRepository.findById(anyLong())).thenReturn(optionalPerson);
 
         Person response = personService.findById(ID);
@@ -78,11 +74,11 @@ class PersonServiceTest {
         assertEquals(ID, response.getId());
         assertEquals(NAME, response.getName());
         assertEquals(DATE_OF_BIRTH, response.getDateOfBirth());
-        assertEquals(null, response.getPublicPlaces());
+        assertNull(response.getPublicPlaces());
     }
 
     @Test
-    void shouldAnObjectNotFoundException_whenToCallFindById() {
+    void mustReturnAnObjectNotFoundException_whenToCallFindById() {
         when(personRepository.findById(anyLong())).thenThrow(new ObjectNotFoundException(PERSON_NOT_FOUND));
 
         try {
@@ -95,7 +91,7 @@ class PersonServiceTest {
     }
 
     @Test
-    void shouldAnSuccessAndAnPersonInstanceWithPublicPlace_whenToCallFindById() {
+    void mustReturnAnSuccessAndAnPersonInstanceWithPublicPlace_whenToCallFindById() {
         when(personRepository.findById(anyLong())).thenReturn(optionalPersonWithPublicPlace);
 
         Person response = personService.findById(ID);
@@ -113,19 +109,104 @@ class PersonServiceTest {
         assertEquals(CEP,  response.getPublicPlaces().get(0).getCep());
         assertEquals(NUMBER,  response.getPublicPlaces().get(0).getNumber());
         assertEquals(CITY,  response.getPublicPlaces().get(0).getCity());
-        assertEquals(true,  response.getPublicPlaces().get(0).isMain());
+        assertTrue(response.getPublicPlaces().get(0).isMain());
     }
 
     @Test
-    void findAll() {
+    void mustReturnASuccessAndAListOfPerson_whenToCallFindAll() {
+        when(personRepository.findAll()).thenReturn(List.of(person));
+
+        List<Person> response = personService.findAll();
+
+        assertNotNull(response);
+        assertEquals(Person.class, response.get(0).getClass());
+        assertEquals(1, response.size());
+        assertEquals(ID, response.get(0).getId());
+        assertEquals(NAME, response.get(0).getName());
+        assertEquals(DATE_OF_BIRTH, response.get(0).getDateOfBirth());
+        assertNull(response.get(0).getPublicPlaces());
     }
 
     @Test
-    void update() {
+    void mustReturnASuccessAndAListOfPersonWithPublicPlace_whenToCallFindAll() {
+        when(personRepository.findAll()).thenReturn(List.of(personWithPublicPlace));
+
+        List<Person> response = personRepository.findAll();
+
+        assertNotNull(response);
+        assertEquals(Person.class, response.get(0).getClass());
+        assertEquals(1, response.size());
+        assertEquals(ID, response.get(0).getId());
+        assertEquals(NAME, response.get(0).getName());
+        assertEquals(DATE_OF_BIRTH, response.get(0).getDateOfBirth());
+        assertEquals(1, response.get(0).getPublicPlaces().size());
+
+        assertEquals(PUBLIC_PLACE, response.get(0).getPublicPlaces().get(0).getPublicPlace());
+        assertEquals(CEP, response.get(0).getPublicPlaces().get(0).getCep());
+        assertEquals(NUMBER, response.get(0).getPublicPlaces().get(0).getNumber());
+        assertEquals(CITY, response.get(0).getPublicPlaces().get(0).getCity());
+        assertTrue(response.get(0).getPublicPlaces().get(0).isMain());
     }
 
     @Test
-    void findAllPublicPlaces() {
+    void mustReturnASuccessAndAPersonInstance_whenToCallUpdate() {
+        when(personRepository.save(person)).thenReturn(person);
+        when(personRepository.findById(any())).thenReturn(optionalPerson);
+
+        Person response = personService.update(person);
+
+        assertNotNull(response);
+        assertEquals(Person.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NAME, response.getName());
+        assertEquals(DATE_OF_BIRTH, response.getDateOfBirth());
+        assertNull(response.getPublicPlaces());
+    }
+
+    @Test
+    void mustReturnASuccessAndAPersonInstanceWithPublicPlace_whenToCallUpdate() {
+        when(personRepository.save(personWithPublicPlace)).thenReturn(personWithPublicPlace);
+        when(personRepository.findById(anyLong())).thenReturn(optionalPersonWithPublicPlace);
+
+        Person response = personService.update(personWithPublicPlace);
+
+        assertNotNull(response);
+        assertEquals(Person.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NAME, response.getName());
+        assertEquals(DATE_OF_BIRTH, response.getDateOfBirth());
+
+        assertEquals(PUBLIC_PLACE, response.getPublicPlaces().get(0).getPublicPlace());
+        assertEquals(CEP, response.getPublicPlaces().get(0).getCep());
+        assertEquals(NUMBER, response.getPublicPlaces().get(0).getNumber());
+        assertEquals(CITY, response.getPublicPlaces().get(0).getCity());
+        assertTrue(response.getPublicPlaces().get(0).isMain());
+    }
+
+    @Test
+    void mustReturnAnSuccessAndAnListOfTheUsersPublicPlaces_whenToCallFindAllPublicPlaces() {
+        when(personRepository.findById(anyLong())).thenReturn(optionalPersonWithPublicPlace);
+
+        List<PublicPlace> response = personService.findAllPublicPlaces(ID);
+
+        assertNotNull(response);
+        assertEquals(PublicPlace.class, response.get(0).getClass());
+
+        assertEquals(PUBLIC_PLACE, response.get(0).getPublicPlace());
+        assertEquals(CEP, response.get(0).getCep());
+        assertEquals(NUMBER, response.get(0).getNumber());
+        assertEquals(CITY, response.get(0).getCity());
+        assertEquals(CITY, response.get(0).getCity());
+        assertTrue(response.get(0).isMain());
+    }
+
+    @Test
+    void mustReturnAnSuccessAndNullOfPublicPlaces_whenToCallFindAllPublicPlaces() {
+        when(personRepository.findById(anyLong())).thenReturn(optionalPerson);
+
+        List<PublicPlace> response = personService.findAllPublicPlaces(ID);
+
+        assertNull(response);
     }
 
     private void startPerson() {
