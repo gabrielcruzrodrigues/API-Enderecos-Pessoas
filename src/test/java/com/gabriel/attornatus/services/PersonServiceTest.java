@@ -2,17 +2,22 @@ package com.gabriel.attornatus.services;
 
 import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.repositories.PersonRepository;
+import com.gabriel.attornatus.util.OnlyLetters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class PersonServiceTest {
@@ -20,6 +25,7 @@ class PersonServiceTest {
     public static final long ID = 1L;
     public static final String NAME = "Gabriel";
     public static final LocalDate DATE_OF_BIRTH = LocalDate.of(2002, 01, 22);
+
     @InjectMocks
     private PersonService personService;
 
@@ -36,7 +42,17 @@ class PersonServiceTest {
     }
 
     @Test
-    void create() {
+    void shouldAnSuccessAndAnPersonInstance_whenToCallCreate() {
+        when(personRepository.save(any())).thenReturn(person);
+
+        Person response = personService.create(person);
+
+        assertNotNull(response);
+        assertEquals(Person.class, response.getClass());
+
+        assertEquals(ID, response.getId());
+        assertEquals(NAME, response.getName());
+        assertEquals(DATE_OF_BIRTH, response.getDateOfBirth());
     }
 
     @Test
