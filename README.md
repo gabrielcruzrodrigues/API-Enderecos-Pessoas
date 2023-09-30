@@ -12,6 +12,8 @@ cria nova pessoa.
 ```
 
 #### PUT /person/:id 
+* :id = id da pessoa.
+
 Atualiza registro da uma pessoa indicada pelo id.
 * body:
 ```
@@ -21,6 +23,8 @@ Atualiza registro da uma pessoa indicada pelo id.
 }
 ```
 #### GET /person/:id 
+* :id = id da pessoa.
+
 Busca pessoa por id.
 ```
 {
@@ -60,8 +64,11 @@ Lista todas as pessoas.
 ```
 
 #### POST /publicPlace/:id
+* :id = id da pessoa.
+
 cria endereço (publicPlace) para pessoa indicada pelo id.
-- por padrão, o primeiro endereço criado para uma pessoa, sera o seu endereço principal atual, você pode alterar isso usando o `PUT /publicPlace/main/:id`, listado logo abaixo.
+- por padrão, o primeiro logradouro criado para uma pessoa, sera o seu endereço principal atual, você pode alterar isso usando o `PUT /publicPlace/main/:id`, listado logo abaixo.
+- o logradouro principal da pessoa é representado pelo campo "main"
 * body:
 ```
 {
@@ -72,6 +79,8 @@ cria endereço (publicPlace) para pessoa indicada pelo id.
 }
 ```
 #### GET /person/publicPlaces/:id
+* :id = id da pessoa.
+
 Lista todos os endereços de uma pessoa.
 ```
 [
@@ -94,6 +103,8 @@ Lista todos os endereços de uma pessoa.
 ```
 
 #### GET /publicPlace/main/:id
+* :id = id da pessoa.
+
 Lista o logradouro principal da pessoa.
 ```
 {
@@ -107,6 +118,8 @@ Lista o logradouro principal da pessoa.
 ```
 
 #### PUT /publicPlace/main/:id
+* :id = id da pessoa.
+
 Atualiza o logradouro principal da pessoa.
 * body:
 ```
