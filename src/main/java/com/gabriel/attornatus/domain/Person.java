@@ -3,9 +3,9 @@ package com.gabriel.attornatus.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,12 +16,13 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O seu nome não pode estar em branco")
     @NotNull
-    @NotBlank(message = "O nome não pode estar em branco!")
     @Column(nullable = false, length = 60)
+    @Size(min = 3, max = 60, message = "O seu nome deve conter de 3 a 60 caracteres.")
     private String name;
 
-    @Column
+    @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)

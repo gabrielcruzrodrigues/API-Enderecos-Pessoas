@@ -2,7 +2,6 @@ package com.gabriel.attornatus.resources;
 
 import com.gabriel.attornatus.domain.DTO.PublicPlaceDTO;
 import com.gabriel.attornatus.domain.PublicPlace;
-import com.gabriel.attornatus.services.PersonService;
 import com.gabriel.attornatus.services.PublicPlaceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

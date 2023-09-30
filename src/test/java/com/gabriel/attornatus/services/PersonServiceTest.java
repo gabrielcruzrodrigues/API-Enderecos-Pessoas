@@ -153,7 +153,7 @@ class PersonServiceTest {
         when(personRepository.save(person)).thenReturn(person);
         when(personRepository.findById(any())).thenReturn(optionalPerson);
 
-        Person response = personService.update(person);
+        Person response = personService.update(person, ID);
 
         assertNotNull(response);
         assertEquals(Person.class, response.getClass());
@@ -168,7 +168,7 @@ class PersonServiceTest {
         when(personRepository.save(personWithPublicPlace)).thenReturn(personWithPublicPlace);
         when(personRepository.findById(anyLong())).thenReturn(optionalPersonWithPublicPlace);
 
-        Person response = personService.update(personWithPublicPlace);
+        Person response = personService.update(personWithPublicPlace, ID);
 
         assertNotNull(response);
         assertEquals(Person.class, response.getClass());

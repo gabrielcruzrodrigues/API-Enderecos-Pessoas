@@ -4,7 +4,11 @@ public class PublicPlaceDTO {
 
     private Long id;
 
-    public PublicPlaceDTO(long id) {
+    public PublicPlaceDTO() {
+    }
+
+    public PublicPlaceDTO(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

@@ -2,9 +2,7 @@ package com.gabriel.attornatus.resources;
 
 import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.domain.PublicPlace;
-import com.gabriel.attornatus.repositories.PersonRepository;
 import com.gabriel.attornatus.services.PersonService;
-import com.gabriel.attornatus.services.PublicPlaceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +44,7 @@ public class PersonResource {
 
     @PutMapping("/{id}")
     public ResponseEntity<Person> update(@RequestBody @Valid Person person, @PathVariable Long id) {
-        person.setId(id);
-        return ResponseEntity.ok().body(personService.update(person));
+        return ResponseEntity.ok().body(personService.update(person, id));
     }
 
 

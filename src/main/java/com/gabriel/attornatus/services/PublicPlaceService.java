@@ -4,6 +4,7 @@ import com.gabriel.attornatus.domain.DTO.PublicPlaceDTO;
 import com.gabriel.attornatus.domain.Person;
 import com.gabriel.attornatus.domain.PublicPlace;
 import com.gabriel.attornatus.repositories.PublicPlaceRepository;
+import com.gabriel.attornatus.services.Exceptions.DataIntegrityViolationException;
 import com.gabriel.attornatus.services.Exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,6 @@ public class PublicPlaceService {
     @Transactional
     public PublicPlace create(PublicPlace publicPlaceObj, Long idPerson) {
         CityContainsOnlyLetters(publicPlaceObj, "city");
-
         Person person = personService.findById(idPerson);
         PublicPlace publicPlaceForSave = preparesPublicPlaceForCreation(person, publicPlaceObj);
         return publicPlaceRepository.save(publicPlaceForSave);
@@ -64,17 +64,22 @@ public class PublicPlaceService {
         return null;
     }
 
-    public PublicPlace changeOfMainPublicPlace(Long idPerson, PublicPlaceDTO PlaceTDO) {
-        PublicPlace publicPlace = returnMainPublicPlace(idPerson);
-        Long id = PlaceTDO.getId();
-        PublicPlace newPublicPlace = this.findById(id);
-
-        return updateOfPublicPlace(publicPlace, newPublicPlace);
-    }
-
     public PublicPlace findById(Long id) {
         Optional<PublicPlace> publicPlace = publicPlaceRepository.findById(id);
         return publicPlace.orElseThrow(() -> new ObjectNotFoundException("logradouro não encontrado!"));
+    }
+
+    public PublicPlace changeOfMainPublicPlace(Long idPerson, PublicPlaceDTO PlaceTDO) {
+        verifyForUpdate(idPerson, PlaceTDO.getId());
+        PublicPlace publicPlace = returnMainPublicPlace(idPerson);
+        Long id = PlaceTDO.getId();
+        PublicPlace newPublicPlace = this.findById(id);
+        return updateOfPublicPlace(publicPlace, newPublicPlace);
+    }
+
+    private void verifyForUpdate(Long id, Long idForUpdate) {
+        List<PublicPlace> publicPlaces = personService.findAllPublicPlaces(id);
+        if (publicPlaces.size() < idForUpdate) throw new DataIntegrityViolationException("Você não tem um logradouro com este id.");
     }
 
     public PublicPlace updateOfPublicPlace(PublicPlace publicPlace, PublicPlace newPublicPlace) {

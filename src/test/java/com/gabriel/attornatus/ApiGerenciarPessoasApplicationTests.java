@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AttornatusApplicationTests {
+class ApiGerenciarPessoasApplicationTests {
 
 	@Test
 	void main() {
-		AttornatusApplication.main(new String[] {});
+		ApiGerenciarPessoasApplication.main(new String[] {});
 	}
 
 }

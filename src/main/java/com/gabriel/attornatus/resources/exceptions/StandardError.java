@@ -1,10 +1,6 @@
 package com.gabriel.attornatus.resources.exceptions;
 
-import org.springframework.boot.context.properties.bind.validation.ValidationErrors;
-import org.springframework.validation.FieldError;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class StandardError {
 

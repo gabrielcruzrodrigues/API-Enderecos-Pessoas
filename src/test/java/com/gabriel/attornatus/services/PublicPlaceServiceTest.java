@@ -45,9 +45,6 @@ class PublicPlaceServiceTest {
     @Mock
     private PersonService personService;
 
-    @Mock
-    private OnlyLetters onlyLetters;
-
     private Person person;
     private Person personWithPublicPlace;
     private PublicPlace publicPlace;
@@ -62,18 +59,6 @@ class PublicPlaceServiceTest {
         MockitoAnnotations.openMocks(this);
         startPerson();
     }
-
-//    @Test
-//    void mustReturnAnSuccessAndAPublicPlaceInstanceWithTheMainFieldValueTrue_whenToCallCreate() {
-//        when(personService.findById(anyLong())).thenReturn(personWithPublicPlace);
-//        when(publicPlaceRepository.save(placeMain)).thenReturn(placeMainPerson);
-//
-//        PublicPlace response = publicPlaceService.create(publicPlace, ID);
-//
-//        System.out.println(response);
-//        assertEquals(PublicPlace.class, response.getClass());
-//        assertTrue(response.isMain());
-//    }
 
     @Test
     void mustReturnThePersonMainPublicPlace_whenToCallReturnMainPublicPlace() {
@@ -108,31 +93,6 @@ class PublicPlaceServiceTest {
         assertNull(response);
     }
 
-
-//    @Test
-//    void mustReturnAnInstanceOfPublicPlaceMain_whenToCallChangeOfMainPublicPlace() {
-//       when(publicPlaceService.returnMainPublicPlace(anyLong())).thenReturn(new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE));
-//       when(personService.findById(anyLong())).thenReturn(personWithPublicPlace);
-//       when(publicPlaceRepository.findById(anyLong())).thenReturn(optionalplace);
-//
-//        PublicPlace response = publicPlaceService.changeOfMainPublicPlace(anyLong(), placeDTO);
-//
-//        assertNotNull(response);
-//
-//    }
-
-//    @Test
-//    void mustReturnSuccessAndAnPublicPlaceInstance_whenChangeOfMainPublicPlace() {
-//        when(personService.findById(anyLong())).thenReturn(person);
-//        when(publicPlaceRepository.findById(anyLong())).thenReturn(Optional.of(publicPlace));
-//        when(publicPlaceService.updateOfPublicPlace(publicPlace, publicPlace)).thenReturn(publicPlace);
-//        when(publicPlaceService.findById(anyLong())).thenReturn(publicPlace);
-//
-//        PublicPlace response = publicPlaceService.changeOfMainPublicPlace(ID, placeDTO);
-//
-//        assertNotNull(response);
-//    }
-
     @Test
     void mustReturnObjectNotFoundException_whenToCallFindById() {
         when(personService.findById(anyLong())).thenThrow(new ObjectNotFoundException(PERSON_NOT_FOUND));
@@ -162,7 +122,6 @@ class PublicPlaceServiceTest {
         assertEquals(CITY, response.getCity());
     }
 
-
     private void startPerson() {
         List<PublicPlace> publicPlacesMain = List.of(new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE));
         publicPlaces = List.of(new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, FALSE));
@@ -174,9 +133,5 @@ class PublicPlaceServiceTest {
         placeMain = new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE);
         placeMainPerson = new PublicPlace(PUBLIC_PLACE, CEP, NUMBER, CITY, TRUE, person);
         placeDTO = new PublicPlaceDTO(ID);
-
-
-//        optionalPerson = Optional.of(new Person(ID, NAME, DATE_OF_BIRTH));
-//        optionalPersonWithPublicPlace = Optional.of(new Person(ID, NAME, DATE_OF_BIRTH, publicPlaces));
     }
 }

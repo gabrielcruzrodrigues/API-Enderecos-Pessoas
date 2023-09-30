@@ -4,10 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AttornatusApplication {
+public class ApiGerenciarPessoasApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AttornatusApplication.class, args);
+		SpringApplication.run(ApiGerenciarPessoasApplication.class, args);
 	}
 
 }
+
+

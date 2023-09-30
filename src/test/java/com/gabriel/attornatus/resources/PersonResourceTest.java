@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -153,7 +154,7 @@ class PersonResourceTest {
 
     @Test
     void mustReturnAInstancePersonWithStatusOk_whenToCallUpdate() {
-        when(personService.update(personWithPublicPlace)).thenReturn(personWithPublicPlace);
+        when(personService.update(any(), anyLong())).thenReturn(personWithPublicPlace);
 
         ResponseEntity<Person> response = personResource.update(personWithPublicPlace, ID);
 
@@ -177,7 +178,7 @@ class PersonResourceTest {
 
     @Test
     void mustReturnADataIntegrityViolationException_whenToCallUpdate() {
-        when(personService.update(personWithPublicPlace)).thenThrow(new DataIntegrityViolationException(INVALID_DATA));
+        when(personService.update(any(), anyLong())).thenThrow(new DataIntegrityViolationException(INVALID_DATA));
 
         try {
             personResource.update(personWithPublicPlace, ID);

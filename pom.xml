@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gabriel</groupId>
-	<artifactId>attornatus</artifactId>
+	<artifactId>ApiGerenciadorPessoas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>attornatus</name>
 	<description>Demo project for Spring Boot</description>

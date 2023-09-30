@@ -98,6 +98,7 @@ public class PublicPlace {
     public void setCity(String city) {
         this.city = city;
     }
+
     public Person getPerson() {
         return person;
     }
